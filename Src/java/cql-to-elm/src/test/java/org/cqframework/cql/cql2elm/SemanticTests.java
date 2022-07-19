@@ -501,11 +501,36 @@ public class SemanticTests {
 
     @Test
     public void testIssueEmptySourceInterval() throws IOException {
+        // This library with a syntax error caused an internal translator error
+        // when annotations are enabled
         CqlTranslator translator = TestUtils.runSemanticTest("IssueEmptySourceInterval.cql", 1, CqlTranslator.Options.EnableAnnotations);
 
         java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
 
         assertEquals(1, exceptions.size());
+        assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
+    }
+
+    @Test
+    public void testIssueNullTree() throws IOException {
+        // This library with a syntax error caused an internal translator error
+        // when annotations are enabled
+        CqlTranslator translator = TestUtils.runSemanticTest("IssueNullTree.cql", 1, CqlTranslator.Options.EnableAnnotations);
+
+        java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
+
+        assertEquals(1, exceptions.size());
+        assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
+    }
+
+    @Test
+    public void testIssueNullTreeNoAnnotations() throws IOException {
+        CqlTranslator translator = TestUtils.runSemanticTest("IssueNullTree.cql", 1);
+
+        java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
+
+        assertEquals(1, exceptions.size());
+        assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
     }
 
     @Test

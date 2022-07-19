@@ -197,7 +197,7 @@ public class Cql2ElmVisitor extends cqlBaseVisitor {
     }
 
     private boolean pushChunk(ParseTree tree) {
-        if (!isAnnotationEnabled()) {
+        if (tree == null || !isAnnotationEnabled()) {
             return false;
         }
 
