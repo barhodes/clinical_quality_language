@@ -503,12 +503,34 @@ public class SemanticTests {
     public void testIssueEmptySourceInterval() throws IOException {
         // This library with a syntax error caused an internal translator error
         // when annotations are enabled
-        CqlTranslator translator = TestUtils.runSemanticTest("IssueEmptySourceInterval.cql", 1, CqlTranslator.Options.EnableAnnotations);
+        CqlTranslator translator = TestUtils.runSemanticTest("IssueEmptySourceInterval.cql", 2, CqlTranslator.Options.EnableAnnotations);
+
+        java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
+
+        assertEquals(2, exceptions.size());
+        assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
+    }
+
+    @Test
+    public void testMismatchedParen() throws IOException {
+        CqlTranslator translator = TestUtils.runSemanticTest("IssueMismatchedParen.cql", 1, CqlTranslator.Options.EnableDetailedErrors);
 
         java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
 
         assertEquals(1, exceptions.size());
         assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
+        CqlSyntaxException e = (CqlSyntaxException) exceptions.get(0);
+    }
+
+    @Test
+    public void testPartialList() throws IOException {
+        CqlTranslator translator = TestUtils.runSemanticTest("IssuePartialList.cql", 3, CqlTranslator.Options.EnableLocators, CqlTranslator.Options.EnableResultTypes, CqlTranslator.Options.EnableAnnotations, CqlTranslator.Options.DisableListDemotion, CqlTranslator.Options.DisableListPromotion, CqlTranslator.Options.EnableDetailedErrors);
+
+        java.util.List<CqlTranslatorException> exceptions = translator.getExceptions();
+
+        assertEquals(1, exceptions.size());
+        assertThat(exceptions.get(0), instanceOf(CqlSyntaxException.class));
+        CqlSyntaxException e = (CqlSyntaxException) exceptions.get(0);
     }
 
     @Test

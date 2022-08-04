@@ -197,14 +197,13 @@ public class Cql2ElmVisitor extends cqlBaseVisitor {
     }
 
     private boolean pushChunk(ParseTree tree) {
-        if (tree == null || !isAnnotationEnabled()) {
+        if (!isAnnotationEnabled()) {
             return false;
         }
 
         org.antlr.v4.runtime.misc.Interval sourceInterval = tree.getSourceInterval();
-
-        // An interval of i..i-1 indicates an empty interval at position i in the input stream,
-        if (sourceInterval.b < sourceInterval.a) {
+        // interval i..i-1 indicates an empty interval
+        if (sourceInterval.a > sourceInterval.b) {
             return false;
         }
 

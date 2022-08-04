@@ -569,7 +569,6 @@ public class CqlTranslator {
 
             if (detailedErrors) {
                 builder.recordParsingException(new CqlSyntaxException(msg, trackback, e));
-                builder.recordParsingException(new CqlTranslatorException(msg, trackback, e));
             }
             else {
                 if (offendingSymbol instanceof CommonToken) {
